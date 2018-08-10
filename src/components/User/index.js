@@ -21,13 +21,13 @@ const formatUrl = user => `https://api.github.com/users/${user}`;
 const User = componentFromStream(prop$ => {
   const loading$ = new BehaviorSubject(false);
 
-  const getUser$ = prop$.pipe(
-    debounceTime(1000),
-    pluck("user"),
-    filter(user => user && user.length),
-    map(formatUrl),
-    tap(() => loading$.next(true)),
-    switchMap(url =>
+  const getUser$ = prop$
+    |> debounceTime(1000),
+    |> pluck("user"),
+    |> filter(user => user && user.length),
+    |> map(formatUrl),
+    |> tap(() => loading$.next(true)),
+    |> switchMap(url =>
       ajax(url).pipe(
         pluck("response"),
         delay(1500),
@@ -35,7 +35,6 @@ const User = componentFromStream(prop$ => {
         catchError(error => of(<Error {...error} />))
       )
     )
-  );
   return merge(loading$, getUser$).pipe(
     map(result => (result === true ? <h3>Loading...</h3> : result))
   );

@@ -11,13 +11,11 @@ import "./observableConfig";
 const App = componentFromStream(prop$ => {
   const { handler, stream } = createEventHandler();
 
-  const value$ = stream.pipe(
-    map(e => e.target.value),
-    startWith("")
-  );
+  const value$ = stream |> map(e => e.target.value) |> startWith("");
 
-  return combineLatest(prop$, value$).pipe(
-    map(([props, value]) => (
+  return (
+    combineLatest(prop$, value$)
+    |> map(([props, value]) => (
       <div>
         <input placeholder="GitHub username" onChange={handler} />
         <h2>{props.msg}</h2>
