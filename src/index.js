@@ -25,6 +25,8 @@ const App = componentFromStream(prop$ => {
   );
 });
 
+// SMisli nesto bolje
+
 const Root = () => {
   return <App msg="hello_World" />;
 };
